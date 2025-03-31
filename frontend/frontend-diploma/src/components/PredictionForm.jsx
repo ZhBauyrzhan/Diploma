@@ -30,7 +30,7 @@ const PredictionForm = () => {
     try {
       // console.log(formData);
       const request_data = JSON.stringify(formData);
-      // console.log(request_data);
+      console.log(request_data);
       const response = await axios.post('http://127.0.0.1:8000/prediction/make-prediction/', request_data, {
         headers: {
           'Content-Type': 'application/json'
@@ -214,8 +214,8 @@ const PredictionForm = () => {
             <Form.Group className="mb-3">
               <Form.Label>INCOME</Form.Label>
               <Form.Select
-                name="EDUCATION"
-                value={formData.EDUCATION}
+                name="INCOME"
+                value={formData.INCOME}
                 onChange={handleChange}
               >
                 <option value="upper class">upper class</option>
