@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col, Card } from 'react-bootstrap';
+import axios from 'axios';
 
 const PredictionForm = () => {
   const [formData, setFormData] = useState({
-    AGE: '',
+    AGE: '16-25',
     GENDER: 'female',
     RACE: 'majority',
     DRIVING_EXPERIENCE: '0-9y',
     EDUCATION: 'high school',
+    POSTAL_CODE: '10238',
     INCOME: 'upper class',
     CREDIT_SCORE: 0.6,
-    VEHICLE_OWNERSHIP: '1.0',
+    VEHICLE_OWNERSHIP: true,
     VEHICLE_YEAR: 'after 2015',
-    MARRIED: '0.0',
-    CHILDREN: '1.0',
-    POSTAL_CODE: '10238',
+    MARRIED: true,
+    CHILDREN: true,
     ANNUAL_MILEAGE: 12000,
     VEHICLE_TYPE: 'sedan',
     SPEEDING_VIOLATIONS: 0,
@@ -26,10 +27,18 @@ const PredictionForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Replace with your actual API endpoint
     try {
-      const response = await axios.post('YOUR_API_ENDPOINT', formData);
-      setPrediction(response.data);
+      // console.log(formData);
+      const request_data = JSON.stringify(formData);
+      // console.log(request_data);
+      const response = await axios.post('http://127.0.0.1:8000/prediction/make-prediction/', request_data, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      console.log(response.data['prediction']);
+      setPrediction(response.data['prediction']);
+      // console.log(prediction);
     } catch (error) {
       console.error('Prediction error:', error);
     }
@@ -182,8 +191,8 @@ const PredictionForm = () => {
                 value={formData.MARRIED}
                 onChange={handleChange}
               >
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
               </Form.Select>
             </Form.Group>
 
@@ -283,12 +292,14 @@ const PredictionForm = () => {
         </div>
       </Form>
 
-      {prediction && (
+      {prediction !== null && (
         <Card className="mt-5">
           <Card.Body>
             <Card.Title>Prediction Result</Card.Title>
             <Card.Text>
-              {prediction.result} {/* Adjust based on your API response */}
+              {prediction === 1
+                ? "Client is most likely to claim their loan"
+                : "Client is unlikely to claim their loan"}
             </Card.Text>
           </Card.Body>
         </Card>
