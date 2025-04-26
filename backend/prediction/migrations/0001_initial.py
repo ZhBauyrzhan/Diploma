@@ -7,32 +7,115 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='DriverProfile',
+            name="DriverProfile",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('AGE', models.IntegerField(choices=[('16-25', 0), ('26-39', 1), ('40-64', 2), ('65+', 3)], verbose_name='age')),
-                ('GENDER', models.CharField(choices=[('female', 'Female'), ('male', 'Male')], max_length=10)),
-                ('RACE', models.CharField(choices=[('majority', 'Majority'), ('minority', 'Minority')], max_length=20)),
-                ('DRIVING_EXPERIENCE', models.CharField(choices=[('0-9y', '0-9 years'), ('10-19y', '10-19 years'), ('20-29y', '20-29 years'), ('30y+', '30+ years')], max_length=10)),
-                ('EDUCATION', models.CharField(choices=[('none', 'None'), ('high school', 'High School'), ('university', 'University')], max_length=20)),
-                ('INCOME', models.CharField(choices=[('poverty', 'Poverty'), ('working class', 'Working Class'), ('middle class', 'Middle Class'), ('upper class', 'Upper Class')], max_length=20)),
-                ('CREDIT_SCORE', models.FloatField()),
-                ('VEHICLE_OWNERSHIP', models.BooleanField(default=True)),
-                ('VEHICLE_YEAR', models.CharField(choices=[('before 2015', 'Before 2015'), ('after 2015', 'After 2015')], max_length=20)),
-                ('MARRIED', models.BooleanField()),
-                ('CHILDREN', models.BooleanField()),
-                ('POSTAL_CODE', models.CharField(max_length=10)),
-                ('ANNUAL_MILEAGE', models.IntegerField()),
-                ('VEHICLE_TYPE', models.CharField(choices=[('sedan', 'Sedan'), ('sports car', 'Sports Car')], max_length=20)),
-                ('SPEEDING_VIOLATIONS', models.IntegerField()),
-                ('DUIS', models.IntegerField()),
-                ('PAST_ACCIDENTS', models.IntegerField()),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "AGE",
+                    models.IntegerField(
+                        choices=[
+                            ("16-25", 0),
+                            ("26-39", 1),
+                            ("40-64", 2),
+                            ("65+", 3),
+                        ],
+                        verbose_name="age",
+                    ),
+                ),
+                (
+                    "GENDER",
+                    models.CharField(
+                        choices=[("female", "Female"), ("male", "Male")],
+                        max_length=10,
+                    ),
+                ),
+                (
+                    "RACE",
+                    models.CharField(
+                        choices=[
+                            ("majority", "Majority"),
+                            ("minority", "Minority"),
+                        ],
+                        max_length=20,
+                    ),
+                ),
+                (
+                    "DRIVING_EXPERIENCE",
+                    models.CharField(
+                        choices=[
+                            ("0-9y", "0-9 years"),
+                            ("10-19y", "10-19 years"),
+                            ("20-29y", "20-29 years"),
+                            ("30y+", "30+ years"),
+                        ],
+                        max_length=10,
+                    ),
+                ),
+                (
+                    "EDUCATION",
+                    models.CharField(
+                        choices=[
+                            ("none", "None"),
+                            ("high school", "High School"),
+                            ("university", "University"),
+                        ],
+                        max_length=20,
+                    ),
+                ),
+                (
+                    "INCOME",
+                    models.CharField(
+                        choices=[
+                            ("poverty", "Poverty"),
+                            ("working class", "Working Class"),
+                            ("middle class", "Middle Class"),
+                            ("upper class", "Upper Class"),
+                        ],
+                        max_length=20,
+                    ),
+                ),
+                ("CREDIT_SCORE", models.FloatField()),
+                ("VEHICLE_OWNERSHIP", models.BooleanField(default=True)),
+                (
+                    "VEHICLE_YEAR",
+                    models.CharField(
+                        choices=[
+                            ("before 2015", "Before 2015"),
+                            ("after 2015", "After 2015"),
+                        ],
+                        max_length=20,
+                    ),
+                ),
+                ("MARRIED", models.BooleanField()),
+                ("CHILDREN", models.BooleanField()),
+                ("POSTAL_CODE", models.CharField(max_length=10)),
+                ("ANNUAL_MILEAGE", models.IntegerField()),
+                (
+                    "VEHICLE_TYPE",
+                    models.CharField(
+                        choices=[
+                            ("sedan", "Sedan"),
+                            ("sports car", "Sports Car"),
+                        ],
+                        max_length=20,
+                    ),
+                ),
+                ("SPEEDING_VIOLATIONS", models.IntegerField()),
+                ("DUIS", models.IntegerField()),
+                ("PAST_ACCIDENTS", models.IntegerField()),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
             ],
         ),
     ]
