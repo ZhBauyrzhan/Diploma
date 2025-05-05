@@ -8,7 +8,7 @@ from .models import DriverProfile
 
 class DriverProfileSerializer(serializers.ModelSerializer):
 
-    normilized_order = [
+    normalized_order = [
         "CREDIT_SCORE",
         "VEHICLE_OWNERSHIP",
         "MARRIED",
@@ -63,5 +63,4 @@ class DriverProfileSerializer(serializers.ModelSerializer):
         X = pd.get_dummies(X).reindex(columns=training_columns, fill_value=0)
         X.to_numpy(dtype="d")
         X = sc.transform(X)
-        print(X)
         return X

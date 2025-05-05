@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     # Installed Apps
     "rest_framework",
     "corsheaders",
+    "rest_framework_simplejwt",
     # My Local Apps
     "prediction",
 ]
@@ -61,7 +62,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "back.wsgi.application"
 
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -97,3 +97,9 @@ USE_TZ = True
 STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    )
+}
