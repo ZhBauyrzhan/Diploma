@@ -1,0 +1,43 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: bash -c "python manage.py migrate --noinput && gunicorn -c gunicorn.conf.py back.wsgi:application"
+    volumes:
+      - ./:/app
+    ports:
+      - "8080:8000"
+#    depends_on:
+#      mongo:
+#        condition: service_healthy
+    environment:
+      - DEBUG=${DJANGO_DEBUG}
+      - SECRET_KEY=${DJANGO_SECRET_KEY}
+      - ALLOWED_HOSTS=${DJANGO_ALLOWED_HOSTS}
+      - PYTHONUNBUFFERED=1
+    env_file:
+      - .env
+  mongo:
+    image: mongo:6
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+    healthcheck:
+      test: |
+        echo 'db.runCommand("ping").ok' | \
+        mongosh localhost:27017/${MONGO_INITDB_DATABASE} \
+        --quiet \
+        -u ${MONGO_INITDB_ROOT_USERNAME} \
+        -p ${MONGO_INITDB_ROOT_PASSWORD}  \
+        --authenticationDatabase admin
+      interval: 5s
+      timeout: 5s
+      retries: 5
+volumes:
+  mongo_data:

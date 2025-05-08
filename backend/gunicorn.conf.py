@@ -3,7 +3,7 @@
 from multiprocessing import cpu_count
 from os import environ
 
-bind = "127.0.0.1:" + environ.get("PORT", "8000")
+bind = "0.0.0.0:8000"
 loglevel = environ.get("LOGLEVEL", "info")
 max_requests = 1000
 worker_class = "sync"  # TODO: test

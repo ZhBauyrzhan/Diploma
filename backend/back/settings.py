@@ -1,9 +1,8 @@
+from os import environ
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = (
-    "django-insecure-j^0#+r&ya1ar08i231$=s_1di-aubnmoi-#i@or$b9_qq3n!+4"
-)
+SECRET_KEY = environ.get("DJANGO_SECRET_KEY")
 
 DEBUG = True
 
@@ -38,9 +37,10 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-]
+CORS_ALLOW_ALL_ORIGINS = True  # TODO: change
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:5173",
+# ]
 
 ROOT_URLCONF = "back.urls"
 
