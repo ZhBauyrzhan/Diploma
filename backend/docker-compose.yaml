@@ -8,9 +8,9 @@ services:
       - ./:/app
     ports:
       - "8080:8000"
-#    depends_on:
-#      mongo:
-#        condition: service_healthy
+    depends_on:
+      mongo:
+        condition: service_healthy
     environment:
       - DEBUG=${DJANGO_DEBUG}
       - SECRET_KEY=${DJANGO_SECRET_KEY}

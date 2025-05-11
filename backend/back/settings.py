@@ -2,13 +2,13 @@ from os import environ
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = environ.get("DJANGO_SECRET_KEY")
-
-DEBUG = True
+SECRET_KEY = environ.get(
+    "DJANGO_SECRET_KEY",
+    default="ymz2yiktgs=*8zkn1ie62e*++2z1a=f2i%k=4je11=gz&iqi%t",
+)
+DEBUG = environ.get("DJANGO_DEBUG", default="False")
 
 ALLOWED_HOSTS = []
-
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     # My Local Apps
     "prediction",
+    "claims",
 ]
 
 MIDDLEWARE = [
@@ -38,9 +39,6 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True  # TODO: change
-# CORS_ALLOWED_ORIGINS = [
-#     "http://localhost:5173",
-# ]
 
 ROOT_URLCONF = "back.urls"
 
@@ -61,13 +59,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "back.wsgi.application"
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
 
 # fmt: off
 AUTH_PASSWORD_VALIDATORS = [

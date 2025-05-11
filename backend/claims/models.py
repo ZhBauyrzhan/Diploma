@@ -1,8 +1,14 @@
 from django.db import models
 
 
+class AgeChoices(models.IntegerChoices):
+    AGE_16_25 = 0, "16-25"
+    AGE_26_39 = 1, "26-39"
+    AGE_40_64 = 2, "40-64"
+    AGE_65_PLUS = 3, "65+"
+
+
 class DriverProfile(models.Model):
-    AGE_CHOICES = [("16-25", 0), ("26-39", 1), ("40-64", 2), ("65+", 3)]
     GENDER_CHOICES = [("female", "Female"), ("male", "Male")]
     RACE_CHOICES = [("majority", "Majority"), ("minority", "Minority")]
     DRIVING_EXPERIENCE_CHOICES = [
@@ -24,7 +30,7 @@ class DriverProfile(models.Model):
         ("upper class", "Upper Class"),
     ]
 
-    AGE = models.IntegerField(verbose_name="age", choices=AGE_CHOICES)
+    AGE = models.IntegerField(verbose_name="AGE", choices=AgeChoices.choices)
     GENDER = models.CharField(max_length=10, choices=GENDER_CHOICES)
     RACE = models.CharField(max_length=20, choices=RACE_CHOICES)
     DRIVING_EXPERIENCE = models.CharField(

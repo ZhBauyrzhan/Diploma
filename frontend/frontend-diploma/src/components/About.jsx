@@ -48,7 +48,7 @@ const AboutPage = () => {
                     <Row>
                         <Col md={4}>
                             <img
-                                src="/public/Neural Network-roc.png"
+                                src="/Neural Network-roc.png"
                                 alt="ROC Curve"
                                 className="img-fluid rounded shadow mb-3"
                             />
@@ -56,7 +56,7 @@ const AboutPage = () => {
                         </Col>
                         <Col md={4}>
                             <img
-                                src="public/f1.png"
+                                src="f1.png"
                                 alt="Confusion Matrix"
                                 className="img-fluid rounded shadow mb-3"
                             />
@@ -66,7 +66,7 @@ const AboutPage = () => {
                         <Col md={4}>
                             <h2>Model Performance</h2>
                             <img
-                                src="public/accuracy.png"
+                                src="accuracy.png"
                                 alt="Model Accuracy Comparison"
                                 className="img-fluid rounded shadow"
                             />
