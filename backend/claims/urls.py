@@ -9,5 +9,10 @@ urlpatterns = [
         views.bulk_create_drivers,
         name="bulk_create_drivers",
     ),
+    path(
+        "drivers/csv-upload/<str:filename>/",
+        views.upload_drivers_csv,
+        name="upload_drivers_csv",
+    ),
     path("drivers/<str:driver_id>/", views.driver_view, name="get_driver"),
 ]

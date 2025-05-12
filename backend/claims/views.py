@@ -1,8 +1,11 @@
+import csv
 import json
+from io import TextIOWrapper
 
 from bson import ObjectId, json_util
 from django.http import JsonResponse
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, parser_classes
+from rest_framework.parsers import FileUploadParser
 
 from .db import get_driver_collection
 
@@ -55,7 +58,7 @@ def driver_view(request, driver_id):
         return update_driver(request, driver_id)
     elif request.method == "DELETE":
         return delete_driver(request, driver_id)
-    return JsonResponse(status=400)
+    return JsonResponse(data="bad request method", status=400)
 
 
 def get_driver(request, driver_id):
@@ -105,10 +108,69 @@ def bulk_create_drivers(request):
             raise ValueError("Expected array of driver objects")
         driver_collection = get_driver_collection()
         result = driver_collection.insert_many(drivers_data)
-        inserted_ids = [str(id) for id in result.inserted_ids]
+        inserted_ids = [str(i) for i in result.inserted_ids]
         return JsonResponse(
             {"created_count": len(inserted_ids), "inserted_ids": inserted_ids},
             status=201,
         )
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=400)
+
+
+@api_view(["POST"])
+@parser_classes([FileUploadParser])
+def upload_drivers_csv(request, filename):
+    try:
+        if "file" not in request.FILES:
+            return JsonResponse({"error": "No file uploaded"}, status=400)
+
+        csv_file = TextIOWrapper(request.FILES["file"].file, encoding="utf-8")
+        csv_reader = csv.DictReader(csv_file)
+        drivers = []
+        csv_fieldnames = None
+        for row_num, row in enumerate(csv_reader, start=1):
+            if csv_fieldnames is None:
+                csv_fieldnames = csv_reader.fieldnames
+                csv_fieldnames = [
+                    field_name.strip().lower().replace(" ", "_")
+                    for field_name in csv_fieldnames
+                ]
+
+            driver_data = {
+                "file_name": filename,
+                "csv_row": row_num,
+            }
+
+            for idx, field_name in enumerate(csv_fieldnames):
+                original_field_name = csv_reader.fieldnames[idx]
+                value = (
+                    row[original_field_name].strip()
+                    if row[original_field_name]
+                    else None
+                )
+                driver_data[field_name] = value
+
+            drivers.append(driver_data)
+
+        if not drivers:
+            return JsonResponse(
+                {"error": "No valid driver data found"}, status=400
+            )
+
+        driver_collection = get_driver_collection()
+        result = driver_collection.insert_many(drivers)
+
+        return JsonResponse(
+            {
+                "inserted_count§": len(result.inserted_ids),
+                "inserted_ids": [str(i) for i in result.inserted_ids],
+            },
+            status=201,
+        )
+
+    except csv.Error as e:
+        return JsonResponse(
+            {"error": f"CSV parsing error: {str(e)}"}, status=400
+        )
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)

@@ -17,8 +17,8 @@ class SingletonMongoClient:
             username = settings.MONGO_INITDB_ROOT_USERNAME
             password = settings.MONGO_INITDB_ROOT_PASSWORD
             authSource = settings.MONGO_INITDB_ROOT_AUTHSOURCE
-            # host = settings.MONGO_HOST
-            host = "mongodb://mongo:27017/mydb"
+            host = settings.MONGO_HOST
+
             self.client = MongoClient(
                 host=host,
                 maxPoolSize=100,
