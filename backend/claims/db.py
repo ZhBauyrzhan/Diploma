@@ -1,3 +1,4 @@
+from back import settings
 from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure
 
@@ -13,11 +14,19 @@ class SingletonMongoClient:
 
     def _initialize_connection(self):
         try:
+            username = settings.MONGO_INITDB_ROOT_USERNAME
+            password = settings.MONGO_INITDB_ROOT_PASSWORD
+            authSource = settings.MONGO_INITDB_ROOT_AUTHSOURCE
+            # host = settings.MONGO_HOST
+            host = "mongodb://mongo:27017/mydb"
             self.client = MongoClient(
-                "mongodb://localhost:27017/",
+                host=host,
                 maxPoolSize=100,
                 connectTimeoutMS=3000,
                 serverSelectionTimeoutMS=5000,
+                username=username,
+                password=password,
+                authSource=authSource,
             )  # TODO test
             self.client.admin.command("ping")
         except ConnectionFailure as e:

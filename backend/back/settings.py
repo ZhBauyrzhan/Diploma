@@ -1,7 +1,11 @@
-from os import environ
+from os import environ, getenv
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(dotenv_path=BASE_DIR / ".env")
+
 SECRET_KEY = environ.get(
     "DJANGO_SECRET_KEY",
     default="ymz2yiktgs=*8zkn1ie62e*++2z1a=f2i%k=4je11=gz&iqi%t",
@@ -41,6 +45,13 @@ MIDDLEWARE = [
 CORS_ALLOW_ALL_ORIGINS = True  # TODO: change
 
 ROOT_URLCONF = "back.urls"
+
+# MONGO
+MONGO_INITDB_ROOT_USERNAME = getenv("MONGO_INITDB_ROOT_USERNAME")
+MONGO_INITDB_ROOT_PASSWORD = getenv("MONGO_INITDB_ROOT_PASSWORD")
+MONGO_INITDB_DATABASE = getenv("MONGO_INITDB_DATABASE")
+MONGO_INITDB_ROOT_AUTHSOURCE = getenv("MONGO_INITDB_ROOT_AUTHSOURCE")
+MONGO_HOST = getenv("MONGO_HOST", "mongodb://localhost:27017/")
 
 TEMPLATES = [
     {
@@ -83,8 +94,12 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 
 USE_TZ = True
-
-
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
+}
 STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
