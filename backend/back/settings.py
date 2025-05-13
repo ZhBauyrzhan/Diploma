@@ -22,11 +22,14 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # Installed Apps
     "rest_framework",
+    "rest_framework.authtoken",
+    "rest_framework_simplejwt.token_blacklist",
     "corsheaders",
     "rest_framework_simplejwt",
     # My Local Apps
     "prediction",
     "claims",
+    "user",
 ]
 
 MIDDLEWARE = [
@@ -52,6 +55,12 @@ MONGO_INITDB_ROOT_PASSWORD = getenv("MONGO_INITDB_ROOT_PASSWORD")
 MONGO_INITDB_DATABASE = getenv("MONGO_INITDB_DATABASE")
 MONGO_INITDB_ROOT_AUTHSOURCE = getenv("MONGO_INITDB_ROOT_AUTHSOURCE")
 MONGO_HOST = getenv("MONGO_HOST", "mongodb://localhost:27017/")
+
+# JWT
+SIMPLE_JWT = {
+    "ROTATE_REFRESH_TOKENS": True,
+    "UPDATE_LAST_LOGIN": False,
+}
 
 TEMPLATES = [
     {
@@ -107,5 +116,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
-    )
+    ),
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
 }
+
+AUTH_USER_MODEL = "user.CustomUser"

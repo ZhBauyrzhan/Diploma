@@ -4,13 +4,14 @@ from io import TextIOWrapper
 
 from bson import ObjectId, json_util
 from django.http import JsonResponse
-from rest_framework.decorators import api_view, parser_classes
+from rest_framework.decorators import api_view, parser_classes, permission_classes
 from rest_framework.parsers import FileUploadParser
+from rest_framework.permissions import IsAuthenticated
 
 from .db import get_driver_collection
 
 
-def create_driver(request):
+def _create_driver(request):
     try:
         data = json.loads(request.body)
         driver_collection = get_driver_collection()
@@ -26,7 +27,7 @@ def create_driver(request):
         return JsonResponse({"error": str(e)}, status=400)
 
 
-def list_drivers(request):
+def _list_drivers(request):
     try:
         driver_collection = get_driver_collection()
         drivers = list(driver_collection.find().limit(10))
@@ -42,26 +43,27 @@ def list_drivers(request):
 
 
 @api_view(["POST", "GET"])
+@permission_classes([IsAuthenticated])
 def drivers_view(request):
-
     if request.method == "POST":
-        return create_driver(request)
+        return _create_driver(request)
     else:
-        return list_drivers(request)
+        return _list_drivers(request)
 
 
 @api_view(["GET", "PUT", "DELETE"])
+@permission_classes([IsAuthenticated])
 def driver_view(request, driver_id):
     if request.method == "GET":
-        return get_driver(request, driver_id)
+        return _get_driver(request, driver_id)
     elif request.method == "PUT":
-        return update_driver(request, driver_id)
+        return _update_driver(request, driver_id)
     elif request.method == "DELETE":
-        return delete_driver(request, driver_id)
+        return _delete_driver(request, driver_id)
     return JsonResponse(data="bad request method", status=400)
 
 
-def get_driver(request, driver_id):
+def _get_driver(request, driver_id):
     try:
         driver_collection = get_driver_collection()
         driver = driver_collection.find_one({"_id": ObjectId(driver_id)})
@@ -75,7 +77,7 @@ def get_driver(request, driver_id):
         return JsonResponse({"error": str(e)}, status=400)
 
 
-def update_driver(request, driver_id):
+def _update_driver(request, driver_id):
     try:
         driver_collection = get_driver_collection()
         data = json.loads(request.body)
@@ -89,7 +91,7 @@ def update_driver(request, driver_id):
         return JsonResponse({"error": str(e)}, status=400)
 
 
-def delete_driver(request, driver_id):
+def _delete_driver(request, driver_id):
     try:
         driver_collection = get_driver_collection()
         result = driver_collection.delete_one({"_id": ObjectId(driver_id)})
@@ -101,6 +103,7 @@ def delete_driver(request, driver_id):
 
 
 @api_view(["POST"])
+@permission_classes([IsAuthenticated])
 def bulk_create_drivers(request):
     try:
         drivers_data = json.loads(request.body)
@@ -118,6 +121,7 @@ def bulk_create_drivers(request):
 
 
 @api_view(["POST"])
+@permission_classes([IsAuthenticated])
 @parser_classes([FileUploadParser])
 def upload_drivers_csv(request, filename):
     try:
@@ -153,9 +157,7 @@ def upload_drivers_csv(request, filename):
             drivers.append(driver_data)
 
         if not drivers:
-            return JsonResponse(
-                {"error": "No valid driver data found"}, status=400
-            )
+            return JsonResponse({"error": "No valid driver data found"}, status=400)
 
         driver_collection = get_driver_collection()
         result = driver_collection.insert_many(drivers)
@@ -169,8 +171,6 @@ def upload_drivers_csv(request, filename):
         )
 
     except csv.Error as e:
-        return JsonResponse(
-            {"error": f"CSV parsing error: {str(e)}"}, status=400
-        )
+        return JsonResponse({"error": f"CSV parsing error: {str(e)}"}, status=400)
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
