@@ -30,7 +30,6 @@ const PredictionForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // console.log(formData);
       const request_data = JSON.stringify(formData);
       console.log(request_data);
       const response = await axios.post('http://127.0.0.1:8000/prediction/make-prediction/', request_data, {
@@ -40,7 +39,6 @@ const PredictionForm = () => {
       });
       console.log(response.data['prediction']);
       setPrediction(response.data['prediction']);
-      // console.log(prediction);
     } catch (error) {
       console.error('Prediction error:', error);
     }
@@ -83,13 +81,14 @@ const PredictionForm = () => {
                 </Form.Select>
               </Form.Group>
 
-              <Form.Group className="mb-3">
+              <Form.Group className="mb-3" controlId="formRace">
                 <Form.Label>Race</Form.Label>
-                <Form.Select name="Race" value={formData.RACE} onChange={handleChange}>
+                <Form.Select name="RACE" value={formData.RACE} onChange={handleChange}>
                   <option value="majority">Majority</option>
-                  <option value="Minority">Minority</option>
+                  <option value="minority">Minority</option>
                 </Form.Select>
               </Form.Group>
+
 
             </Col>
             <Col md={6}>
@@ -170,9 +169,12 @@ const PredictionForm = () => {
               <Form.Group className="mb-3">
                 <Form.Label>Vehicle Owner</Form.Label>
                 <Form.Select
-                  name="VEHICLE_OWNER"
-                  value={formData.VEHICLE_OWNER}
-                  onChange={handleChange}
+                  name="VEHICLE_OWNERSHIP"
+                  value={formData.VEHICLE_OWNERSHIP ? "Yes" : "No"}
+                  onChange={(e) => {
+
+                    setFormData({ ...formData, VEHICLE_OWNERSHIP: e.target.value === "Yes" });
+                  }}
                 >
                   <option value="Yes">Yes</option>
                   <option value="No">No</option>
@@ -196,8 +198,10 @@ const PredictionForm = () => {
                 <Form.Label>Married</Form.Label>
                 <Form.Select
                   name="MARRIED"
-                  value={formData.MARRIED}
-                  onChange={handleChange}
+                  value={formData.MARRIED ? "true" : "false"}
+                  onChange={(e) => {
+                    setFormData({ ...formData, MARRIED: e.target.value === "true" });
+                  }}
                 >
                   <option value="true">Yes</option>
                   <option value="false">No</option>
@@ -207,13 +211,16 @@ const PredictionForm = () => {
 
               <Form.Group className="mb-3">
                 <Form.Label>Has children</Form.Label>
+
                 <Form.Select
                   name="CHILDREN"
-                  value={formData.CHILDREN}
-                  onChange={handleChange}
+                  value={formData.CHILDREN ? "true" : "false"} // Convert boolean to string
+                  onChange={(e) => {
+                    setFormData({ ...formData, CHILDREN: e.target.value === "true" });
+                  }}
                 >
-                  <option value="Yes">Yes</option>
-                  <option value="No">No</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
                 </Form.Select>
               </Form.Group>
             </Col>
@@ -222,101 +229,112 @@ const PredictionForm = () => {
 
         )}
         {page === 3 && (
-  <>
-    <Row className="mb-3">
-      <Col md={6}>
-        <Form.Group className="mb-3">
-          <Form.Label>INCOME</Form.Label>
-          <Form.Select
-            name="INCOME"
-            value={formData.INCOME}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select income class</option>
-            <option value="upper class">Upper class</option>
-            <option value="middle class">Middle class</option>
-            <option value="working class">Working class</option>
-            <option value="poverty">Poverty</option>
-          </Form.Select>
-        </Form.Group>
+          <>
+            <Row className="mb-3">
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label>INCOME</Form.Label>
+                  <Form.Select
+                    name="INCOME"
+                    value={formData.INCOME}
+                    onChange={handleChange}
+                    required
+                  >
+                    <option value="">Select income class</option>
+                    <option value="upper class">Upper class</option>
+                    <option value="middle class">Middle class</option>
+                    <option value="working class">Working class</option>
+                    <option value="poverty">Poverty</option>
+                  </Form.Select>
+                </Form.Group>
 
-        <Form.Group className="mb-3">
-          <Form.Label>Speeding Violations (Last 3 Years)</Form.Label>
-          <Form.Control
-            type="number"
-            name="SPEEDING_VIOLATIONS"
-            value={formData.SPEEDING_VIOLATIONS}
-            onChange={handleChange}
-            min="0"
-            max="99"
-            required
-          />
-        </Form.Group>
-      </Col>
+                <Form.Group className="mb-3">
+                  <Form.Label>Speeding Violations (Last 3 Years)</Form.Label>
+                  <Form.Control
+                    type="number"
+                    name="SPEEDING_VIOLATIONS"
+                    value={formData.SPEEDING_VIOLATIONS}
+                    onChange={handleChange}
+                    min="0"
+                    max="99"
+                    required
+                  />
+                </Form.Group>
+              </Col>
 
-      <Col md={6}>
-        <Form.Group className="mb-3">
-          <Form.Label>DUIs (Last 5 Years)</Form.Label>
-          <Form.Control
-            type="number"
-            name="DUIS"
-            value={formData.DUIS}
-            onChange={handleChange}
-            min="0"
-            max="10"
-            required
-          />
-        </Form.Group>
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label>DUIs (Last 5 Years)</Form.Label>
+                  <Form.Control
+                    type="number"
+                    name="DUIS"
+                    value={formData.DUIS}
+                    onChange={handleChange}
+                    min="0"
+                    max="10"
+                    required
+                  />
+                </Form.Group>
 
-        <Form.Group className="mb-3">
-          <Form.Label>Past Accidents (Last 5 Years)</Form.Label>
-          <Form.Control
-            type="number"
-            name="PAST_ACCIDENTS"
-            value={formData.PAST_ACCIDENTS}
-            onChange={handleChange}
-            min="0"
-            max="20"
-            required
-          />
-        </Form.Group>
-      </Col>
-    </Row>
+                <Form.Group className="mb-3">
+                  <Form.Label>Past Accidents (Last 5 Years)</Form.Label>
+                  <Form.Control
+                    type="number"
+                    name="PAST_ACCIDENTS"
+                    value={formData.PAST_ACCIDENTS}
+                    onChange={handleChange}
+                    min="0"
+                    max="20"
+                    required
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
 
-    <Row className="mb-3 justify-content-center">
-      <Col md={6}>
-        <Form.Group className="mb-3">
-          <Form.Label>Annual Mileage</Form.Label>
-          <Form.Control
-            type="number"
-            name="ANNUAL_MILEAGE"
-            value={formData.ANNUAL_MILEAGE}
-            onChange={handleChange}
-            min="1000"
-            max="100000"
-            step="1000"
-            required
-          />
-          <Form.Text className="text-muted">
-            Enter estimated annual mileage (e.g., 12000)
-          </Form.Text>
-        </Form.Group>
-      </Col>
-    </Row>
-  </>
-)}
-
-
-
-        {<div className="d-flex">
+            <Row className="mb-3 justify-content-center">
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Annual Mileage</Form.Label>
+                  <Form.Control
+                    type="number"
+                    name="ANNUAL_MILEAGE"
+                    value={formData.ANNUAL_MILEAGE}
+                    onChange={handleChange}
+                    min="1000"
+                    max="100000"
+                    step="1000"
+                    required
+                  />
+                  <Form.Text className="text-muted">
+                    Enter estimated annual mileage (e.g., 12000)
+                  </Form.Text>
+                </Form.Group>
+              </Col>
+            </Row>
+          </>
+        )}
+        <div className="d-flex justify-content-between mt-4">
           {page > 1 && (
-            <Button variant="secondary" onClick={() => setPage(page - 1)}>
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={(e) => {
+                e.preventDefault(); // Explicitly prevent default
+                setPage(page - 1);
+              }}
+            >
               Previous
             </Button>
           )}
           {page < 3 ? (
-            <Button variant="primary" onClick={() => setPage(page + 1)}>
+            <Button
+              type="button"
+              variant="primary"
+              onClick={(e) => {
+                e.preventDefault(); // Explicitly prevent default
+                setPage(page + 1);
+              }}
+            >
               Next
             </Button>
           ) : (
@@ -324,11 +342,8 @@ const PredictionForm = () => {
               Get Prediction
             </Button>
           )}
-        </div>}
-
+        </div>
       </Form>
-
-
       {
         prediction !== null && (
           <Card className="mt-5">
