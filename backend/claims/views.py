@@ -1,5 +1,6 @@
 import csv
 import json
+import math
 from io import TextIOWrapper
 
 from bson import ObjectId, json_util
@@ -29,15 +30,41 @@ def _create_driver(request):
 
 def _list_drivers(request):
     try:
+        page = int(request.GET.get("page", 1))
+        per_page = int(request.GET.get("per_page", 10))
+        sort_field = request.GET.get("sort", "_id")
+        sort_order = 1 if request.GET.get("order", "asc") == "asc" else -1
+        if page < 1:
+            raise ValueError("Page must be a positive integer")
+        if per_page < 1 or per_page > 100:
+            raise ValueError("Items per page must be between 1 and 100")
+        skip = (page - 1) * per_page
         driver_collection = get_driver_collection()
-        drivers = list(driver_collection.find().limit(10))
+        total_drivers = driver_collection.count_documents({})
+        drivers = list(
+            driver_collection.find()
+            .sort(sort_field, sort_order)
+            .skip(skip)
+            .limit(per_page)
+        )
         for driver in drivers:
             driver["_id"] = str(driver["_id"])
+        total_pages = math.ceil(total_drivers / per_page)
         return JsonResponse(
-            {"drivers": drivers},
+            {
+                "drivers": drivers,
+                "pagination": {
+                    "current_page": page,
+                    "total_pages": total_pages,
+                    "total_drivers": total_drivers,
+                    "per_page": per_page,
+                },
+            },
             safe=False,
             json_dumps_params={"default": json_util.default},
         )
+    except ValueError:
+        return JsonResponse({"error": "Invalid page number"}, status=400)
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=400)
 
