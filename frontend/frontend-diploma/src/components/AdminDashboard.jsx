@@ -70,7 +70,6 @@ const AdminDashboard = () => {
         e.preventDefault();
         try {
             setLoading(true);
-            console.log(formData);
             await axiosInstance.post('/api/user/', formData);
             setSuccess('User created successfully');
             setError('');

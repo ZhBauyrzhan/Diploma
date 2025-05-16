@@ -19,7 +19,7 @@ const Login = () => {
 
     window.dispatchEvent(new Event('storage'));
 
-    navigate('/admin-dashboard');
+    navigate('/drivers');
   } catch (err) {
     setError('Invalid username or password');
   }

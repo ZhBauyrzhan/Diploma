@@ -22,7 +22,6 @@ const CustomNavbar = () => {
         setUsername(decoded.username);
         setIsAuthenticated(true);
       } catch (error) {
-        console.log(error);
         handleLogout();
       }
     } else {

@@ -20,9 +20,6 @@ const DriversList = () => {
                     per_page: perPage
                 }
             });
-
-            console.log(response.data.drivers);
-
             setDrivers(response.data.drivers);
             setTotalPages(response.data.pagination.total_pages);
             setCurrentPage(response.data.pagination.current_page);

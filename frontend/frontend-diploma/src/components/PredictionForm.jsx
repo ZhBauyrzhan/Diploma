@@ -31,13 +31,11 @@ const PredictionForm = () => {
     e.preventDefault();
     try {
       const request_data = JSON.stringify(formData);
-      console.log(request_data);
       const response = await axios.post('http://127.0.0.1:8000/prediction/make-prediction/', request_data, {
         headers: {
           'Content-Type': 'application/json'
         }
       });
-      console.log(response.data['prediction']);
       setPrediction(response.data['prediction']);
     } catch (error) {
       console.error('Prediction error:', error);
