@@ -4,11 +4,13 @@ from .models import CustomUser
 
 
 class UserCreateSerializer(serializers.ModelSerializer):
+    id = serializers.UUIDField(read_only=True)
     password = serializers.CharField(write_only=True)
 
     class Meta:
         model = CustomUser
         fields = [
+            "id",
             "username",
             "email",
             "password",

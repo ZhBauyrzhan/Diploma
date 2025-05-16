@@ -1,7 +1,7 @@
-from django.urls import path
+from rest_framework import routers
 
-from .views import AdminCreateUserView
+from .views import UserViewSet
 
-urlpatterns = [
-    path("create-user/", AdminCreateUserView.as_view(), name="admin-create-user"),
-]
+router = routers.SimpleRouter()
+router.register(r"", UserViewSet)
+urlpatterns = router.urls
