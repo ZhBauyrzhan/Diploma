@@ -214,7 +214,7 @@ const PredictionForm = () => {
 
                 <Form.Select
                   name="CHILDREN"
-                  value={formData.CHILDREN ? "true" : "false"} // Convert boolean to string
+                  value={formData.CHILDREN ? "true" : "false"}
                   onChange={(e) => {
                     setFormData({ ...formData, CHILDREN: e.target.value === "true" });
                   }}
@@ -319,7 +319,7 @@ const PredictionForm = () => {
               type="button"
               variant="secondary"
               onClick={(e) => {
-                e.preventDefault(); // Explicitly prevent default
+                e.preventDefault();
                 setPage(page - 1);
               }}
             >
@@ -331,7 +331,7 @@ const PredictionForm = () => {
               type="button"
               variant="primary"
               onClick={(e) => {
-                e.preventDefault(); // Explicitly prevent default
+                e.preventDefault();
                 setPage(page + 1);
               }}
             >
