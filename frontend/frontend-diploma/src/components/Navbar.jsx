@@ -5,6 +5,8 @@ import { useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import { CgProfile } from "react-icons/cg";
 import { CiLogout } from "react-icons/ci";
+import { FaCloudUploadAlt } from "react-icons/fa";
+
 
 const CustomNavbar = () => {
   const [username, setUsername] = useState('');
@@ -51,10 +53,14 @@ const CustomNavbar = () => {
           <Nav className="ms-auto">
             <Nav.Link as={Link} to="/">Prediction</Nav.Link>
             <Nav.Link as={Link} to="/about">About</Nav.Link>
+            <Nav >
+              {isAuthenticated && <Nav.Link as={Link} to="/data-upload"><FaCloudUploadAlt /> Upload Data</Nav.Link>}
+            </Nav>
           </Nav>
           <Nav className="me-auto">
             {isAuthenticated && <Nav.Link as={Link} to="/admin-dashboard">Dashboard</Nav.Link>}
           </Nav>
+
           <Nav>
             {isAuthenticated ? (
               <Dropdown align="end">
@@ -65,7 +71,7 @@ const CustomNavbar = () => {
 
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                  <Dropdown.Item as={Link} to="/profile"> <CgProfile/> Profile</Dropdown.Item>
+                  <Dropdown.Item as={Link} to="/profile"> <CgProfile /> Profile</Dropdown.Item>
                   <Dropdown.Divider />
                   <Dropdown.Item onClick={handleLogout}><CiLogout />Logout</Dropdown.Item>
                 </Dropdown.Menu>

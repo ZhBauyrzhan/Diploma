@@ -7,6 +7,7 @@ import AboutPage from './components/About';
 import Login from './components/Auth/Login';
 import AdminDashboard from './components/AdminDashboard';
 import ProfilePage from './components/ProfilePage';
+import DataUploadPage from './components/DataUploadPage';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/data-upload" element={<DataUploadPage/>} />
         </Routes>
       </div>
     </Router>
