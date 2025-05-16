@@ -1,0 +1,23 @@
+.table-responsive {
+    overflow-x: auto;
+    max-width: 100%;
+    margin: 20px 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.table thead th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 123, 255, 0.05);
+}
+
+.pagination {
+    margin: 0;
+}
+
+.alert {
+    margin: 20px 0;
+}

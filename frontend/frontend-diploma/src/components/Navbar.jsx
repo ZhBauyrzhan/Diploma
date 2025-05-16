@@ -6,6 +6,7 @@ import { jwtDecode } from 'jwt-decode';
 import { CgProfile } from "react-icons/cg";
 import { CiLogout } from "react-icons/ci";
 import { FaCloudUploadAlt } from "react-icons/fa";
+import { FaDatabase } from "react-icons/fa6";
 
 
 const CustomNavbar = () => {
@@ -55,6 +56,9 @@ const CustomNavbar = () => {
             <Nav.Link as={Link} to="/about">About</Nav.Link>
             <Nav >
               {isAuthenticated && <Nav.Link as={Link} to="/data-upload"><FaCloudUploadAlt /> Upload Data</Nav.Link>}
+            </Nav>
+            <Nav >
+              {isAuthenticated && <Nav.Link as={Link} to="/drivers"> <FaDatabase /> Drivers </Nav.Link>}
             </Nav>
           </Nav>
           <Nav className="me-auto">

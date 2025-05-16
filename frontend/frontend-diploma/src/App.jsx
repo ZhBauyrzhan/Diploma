@@ -8,6 +8,7 @@ import Login from './components/Auth/Login';
 import AdminDashboard from './components/AdminDashboard';
 import ProfilePage from './components/ProfilePage';
 import DataUploadPage from './components/DataUploadPage';
+import DriversList from './components/DriverList';
 
 function App() {
   return (
@@ -20,7 +21,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
           <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/data-upload" element={<DataUploadPage/>} />
+          <Route path="/data-upload" element={<DataUploadPage />} />
+          <Route path="/drivers" element={<DriversList />} />
         </Routes>
       </div>
     </Router>
