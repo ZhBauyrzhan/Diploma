@@ -22,10 +22,11 @@ class UserViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         password = serializer.validated_data.get("password")
+        username = serializer.validated_data.get("username")
         user = serializer.save()
         message = f"""Welcome! Your account has been created.
            Login details:
-           Email: {user.email}
+           Username: {username}
            Password: {password}"""
         send_mail(
             "Your Account Has Been Created",

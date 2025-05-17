@@ -5,7 +5,9 @@ import numpy as np
 import pandas as pd
 from catboost import CatBoostClassifier
 from category_encoders import TargetEncoder
+from celery import shared_task
 from django.conf import settings
+from django.core.mail import send_mail
 from sklearn.impute import KNNImputer
 from sklearn.model_selection import RandomizedSearchCV, train_test_split
 from sklearn.preprocessing import StandardScaler
@@ -13,6 +15,30 @@ from sklearn.utils import class_weight
 
 from .db import get_driver_collection
 from .plotting import make_classification_report
+
+
+@shared_task
+def async_train_and_notify(user_email):
+    print("Starting async train and notify")
+    try:
+        result = train_cat_model()
+        accuracy = result["Accuracy"]
+        send_mail(
+            "Model Training Completed",
+            f"Training finished successfully. Accuracy: {accuracy}",
+            None,
+            [user_email],
+            fail_silently=False,
+        )
+    except Exception as e:
+        send_mail(
+            "Model Training Failed",
+            f"Training failed with error: {str(e)}",
+            None,
+            [user_email],
+            fail_silently=False,
+        )
+        raise
 
 
 def predict(data):
