@@ -78,6 +78,7 @@ def _shap_plot(model, X_test):
 
 
 def make_classification_report(model, X_test, y_test, title):
+    plt.switch_backend("Agg")
     _confusion_matrix(model, X_test, y_test, title)
     _roc_graph(model, X_test, y_test, title)
     _shap_plot(model, X_test)
