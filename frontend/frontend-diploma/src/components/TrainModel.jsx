@@ -1,25 +1,20 @@
 import React, { useState } from 'react';
-import { Button, Alert, Spinner } from 'react-bootstrap';
+import { Button, Alert } from 'react-bootstrap';
 import axiosInstance from '../api';
 
 const TrainModel = () => {
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [response, setResponse] = useState(null);
 
   const handleTrainModel = async () => {
-    setLoading(true);
     setError(null);
     setResponse(null);
 
     try {
-      const response = await axiosInstance.post('http://127.0.0.1:8000/prediction/retrain-model/');
-      console.log(response);
+      const response = await axiosInstance.post('http://127.0.0.1:8000/prediction/async-train-model/');
       setResponse(response.data);
     } catch (err) {
       setError(err.response?.data?.message || 'Training failed');
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -35,30 +30,18 @@ const TrainModel = () => {
 
       {response && (
         <Alert variant="success" className="mt-3" onClose={() => setResponse(null)} dismissible>
-          Training started successfully!<br/>
+          {response.status === 'Training started'
+            ? 'Training started. Wait results on your email'
+            : 'Training request received'}
         </Alert>
       )}
 
       <Button
         variant="primary"
         onClick={handleTrainModel}
-        disabled={loading}
         className="mt-3"
       >
-        {loading ? (
-          <>
-            <Spinner
-              as="span"
-              animation="border"
-              size="sm"
-              role="status"
-              aria-hidden="true"
-            />
-            <span className="ms-2">Training...</span>
-          </>
-        ) : (
-          'Start Training'
-        )}
+        Start Training
       </Button>
     </div>
   );
