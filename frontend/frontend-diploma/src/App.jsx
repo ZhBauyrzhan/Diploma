@@ -9,6 +9,7 @@ import AdminDashboard from './components/AdminDashboard';
 import ProfilePage from './components/ProfilePage';
 import DataUploadPage from './components/DataUploadPage';
 import DriversList from './components/DriverList';
+import TrainModel from './components/TrainModel';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/data-upload" element={<DataUploadPage />} />
           <Route path="/drivers" element={<DriversList />} />
+          <Route path="/train" element={<TrainModel />} />
         </Routes>
       </div>
     </Router>

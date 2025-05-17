@@ -7,6 +7,7 @@ import { CgProfile } from "react-icons/cg";
 import { CiLogout } from "react-icons/ci";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { FaDatabase } from "react-icons/fa6";
+import { MdModelTraining } from "react-icons/md";
 
 
 const CustomNavbar = () => {
@@ -55,6 +56,9 @@ const CustomNavbar = () => {
             <Nav.Link as={Link} to="/about">About</Nav.Link>
             <Nav >
               {isAuthenticated && <Nav.Link as={Link} to="/data-upload"><FaCloudUploadAlt /> Upload Data</Nav.Link>}
+            </Nav>
+            <Nav className="me-auto">
+              {isAuthenticated && <Nav.Link as={Link} to="/train"><MdModelTraining />Train Model</Nav.Link>}
             </Nav>
             <Nav >
               {isAuthenticated && <Nav.Link as={Link} to="/drivers"> <FaDatabase /> Drivers </Nav.Link>}

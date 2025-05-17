@@ -31,12 +31,14 @@ const PredictionForm = () => {
     e.preventDefault();
     try {
       const request_data = JSON.stringify(formData);
+      console.log(request_data);
       const response = await axios.post('http://127.0.0.1:8000/prediction/make-prediction/', request_data, {
         headers: {
           'Content-Type': 'application/json'
         }
       });
-      setPrediction(response.data['prediction']);
+      console.log(response);
+      setPrediction(response.data);
     } catch (error) {
       console.error('Prediction error:', error);
     }
@@ -347,11 +349,21 @@ const PredictionForm = () => {
           <Card className="mt-5">
             <Card.Body>
               <Card.Title>Prediction Result</Card.Title>
-              <Card.Text>
-                {prediction === 1
-                  ? "Client is most likely to claim their loan"
-                  : "Client is unlikely to claim their loan"}
-              </Card.Text>
+              {prediction.status === 'success' ? (
+                <>
+                  <Card.Text>
+                    {prediction.prediction === 1 ? "Client is likely to make an insurance claim in the next year"
+                      : "Client is unlikely to make an insurance claim in the next year"}
+                  </Card.Text>
+                  <Card.Text>
+                    Probability: {(prediction.probability * 100).toFixed(2)}%
+                  </Card.Text>
+                </>
+              ) : (
+                <Card.Text className="text-danger">
+                  Error: {prediction.error || 'Failed to get prediction'}
+                </Card.Text>
+              )}
             </Card.Body>
           </Card>
         )
