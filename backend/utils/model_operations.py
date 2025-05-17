@@ -14,22 +14,23 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.utils import class_weight
 
 from .db import get_driver_collection
+from .mail import send_model_results
 from .plotting import make_classification_report
 
 
 @shared_task
 def async_train_and_notify(user_email):
-    print("Starting async train and notify")
     try:
-        result = train_cat_model()
+        result = train_cat_model(update=False)
         accuracy = result["Accuracy"]
-        send_mail(
-            "Model Training Completed",
-            f"Training finished successfully. Accuracy: {accuracy}",
-            None,
-            [user_email],
-            fail_silently=False,
-        )
+        send_model_results(accuracy, user_email)
+        # send_mail(
+        #     "Model Training Completed",
+        #     f"Training finished successfully. Accuracy: {accuracy}",
+        #     None,
+        #     [user_email],
+        #     fail_silently=False,
+        # )
     except Exception as e:
         send_mail(
             "Model Training Failed",
@@ -59,14 +60,13 @@ def predict(data):
         return {"error": str(e), "status": "error"}
 
 
-def train_cat_model():
+def train_cat_model(update=True):
     try:
+        temp = "" if update else "_temp"
         collection = get_driver_collection()
         data = list(collection.find({}))
         df = _data_preprocessing(pd.DataFrame(data))
-
         X = df.drop(["ID", "OUTCOME", "CSV_ROW", "_ID", "FILE_NAME"], axis=1)
-        print(X.columns)
         df["OUTCOME"] = pd.to_numeric(df["OUTCOME"], errors="coerce")
         y = df["OUTCOME"]
         X = _scale(pd.get_dummies(X))
@@ -79,7 +79,9 @@ def train_cat_model():
         )
         class_weights = dict(enumerate(class_weights))
         best_model = _get_best_model(X_train, y_train, class_weights)
-        _save_model(best_model, "catboost")
+        print("catboost" + temp)
+        _save_model(best_model, "catboost" + temp)
+
         return make_classification_report(best_model, X_test, y_test, title="CatBoost")
     except Exception as e:
         print(e)

@@ -5,3 +5,4 @@
 .idea/
 catboost_info/
 model_artifacts/catboostmodel.cbm
+model_artifacts/catboost_tempmodel.cbm

@@ -24,13 +24,6 @@ def _plot_confusion_matrix(title, f1, conf_mat):
     displ = ConfusionMatrixDisplay(confusion_matrix=conf_mat)
     displ.plot()
     plt.title(f"Confusion Matrix of {title} (F1 Score: {f1:.2f})")
-    plt.savefig(
-        _get_path("confusion_matrix.pdf"),
-        bbox_inches="tight",
-        dpi=300,
-        transparent=True,
-        facecolor="white",
-    )
 
 
 def _convert_for_prediction(arr):
