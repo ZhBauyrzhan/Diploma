@@ -1,4 +1,4 @@
-from os import environ, getenv
+from os import environ, getenv, path
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -68,6 +68,8 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
+MODEL_DIR = path.join(BASE_DIR, "model_artifacts")
 
 TEMPLATES = [
     {

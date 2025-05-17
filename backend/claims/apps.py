@@ -1,6 +1,5 @@
 from django.apps import AppConfig
-
-from .db import close_mongo_connections
+from utils.db import close_mongo_connections
 
 
 class ClaimsEditorConfig(AppConfig):

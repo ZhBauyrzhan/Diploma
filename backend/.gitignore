@@ -3,3 +3,5 @@
 **/__pycache__/
 .DS_Store
 .idea/
+catboost_info/
+model_artifacts/catboostmodel.cbm

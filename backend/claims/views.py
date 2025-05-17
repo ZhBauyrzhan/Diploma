@@ -8,8 +8,7 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view, parser_classes, permission_classes
 from rest_framework.parsers import FileUploadParser
 from rest_framework.permissions import IsAuthenticated
-
-from .db import get_driver_collection
+from utils.db import get_driver_collection
 
 
 def _create_driver(request):
