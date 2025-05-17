@@ -1,3 +1,4 @@
+from django.core.mail import send_mail
 from rest_framework import permissions, viewsets
 from rest_framework_simplejwt.views import TokenObtainPairView
 
@@ -18,3 +19,18 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = UserCreateSerializer
     permission_classes = [permissions.IsAdminUser]
+
+    def perform_create(self, serializer):
+        password = serializer.validated_data.get("password")
+        user = serializer.save()
+        message = f"""Welcome! Your account has been created.
+           Login details:
+           Email: {user.email}
+           Password: {password}"""
+        send_mail(
+            "Your Account Has Been Created",
+            message,
+            None,
+            [user.email],
+            fail_silently=False,
+        )
