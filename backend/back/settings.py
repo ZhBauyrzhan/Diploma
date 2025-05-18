@@ -46,6 +46,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True  # TODO: change
+# CORS_ALLOWED_ORIGINS = ['localhost:3000']
 
 ROOT_URLCONF = "back.urls"
 
