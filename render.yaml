@@ -16,9 +16,6 @@ services:
       - key: PYTHONUNBUFFERED
         value: "1"
       - fromGroup: shared-env
-    dependsOn:
-      - name: redis
-      - name: mongo
 
   - type: worker
     name: celery-worker
@@ -36,13 +33,10 @@ services:
       - key: PYTHONUNBUFFERED
         value: "1"
       - fromGroup: shared-env
-    dependsOn:
-      - name: redis
-      - name: django-backend
 
   - type: redis
     name: redis
-    ipAllowList: [] # Open to all
+    ipAllowList: [] # open to all
 
   - type: pserv
     name: mongo
