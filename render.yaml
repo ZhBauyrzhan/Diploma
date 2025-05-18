@@ -1,0 +1,70 @@
+services:
+  - type: web
+    name: django-backend
+    env: docker
+    rootDir: backend
+    dockerfilePath: Dockerfile
+    startCommand: >
+      bash -c "python manage.py migrate --noinput && gunicorn -c gunicorn.conf.py back.wsgi:application"
+    envVars:
+      - key: DJANGO_DEBUG
+        value: "False"
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: DJANGO_ALLOWED_HOSTS
+        value: your-backend.onrender.com
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - fromGroup: shared-env
+    dependsOn:
+      - name: redis
+      - name: mongo
+
+  - type: worker
+    name: celery-worker
+    env: docker
+    rootDir: backend
+    dockerfilePath: Dockerfile
+    startCommand: celery -A back worker --loglevel=info
+    envVars:
+      - key: DJANGO_DEBUG
+        value: "False"
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: CELERY_BROKER_URL
+        value: redis://redis:6379/0
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - fromGroup: shared-env
+    dependsOn:
+      - name: redis
+      - name: django-backend
+
+  - type: redis
+    name: redis
+    ipAllowList: [] # Open to all
+
+  - type: pserv
+    name: mongo
+    env: docker
+    rootDir: mongo
+    dockerfilePath: Dockerfile
+    plan: free
+    autoDeploy: false
+    envVars:
+      - key: MONGO_INITDB_ROOT_USERNAME
+        value: your-root-username
+      - key: MONGO_INITDB_ROOT_PASSWORD
+        value: your-root-password
+      - key: MONGO_INITDB_DATABASE
+        value: your-db-name
+
+envVarGroups:
+  - name: shared-env
+    envVars:
+      - key: MONGO_INITDB_ROOT_USERNAME
+        value: your-root-username
+      - key: MONGO_INITDB_ROOT_PASSWORD
+        value: your-root-password
+      - key: MONGO_INITDB_DATABASE
+        value: your-db-name
