@@ -32,7 +32,7 @@ const PredictionForm = () => {
     try {
       const request_data = JSON.stringify(formData);
       console.log(request_data);
-      const response = await axios.post('https://backend-rough-wildflower-2218.fly.dev/', request_data, {
+      const response = await axios.post('https://backend-rough-wildflower-2218.fly.dev/prediction/make-prediction/', request_data, {
         headers: {
           'Content-Type': 'application/json'
         }
