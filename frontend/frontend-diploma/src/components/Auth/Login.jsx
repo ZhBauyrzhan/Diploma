@@ -13,7 +13,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
   e.preventDefault();
   try {
-    const { data } = await axiosInstance.post(' https://backend-rough-wildflower-2218.fly.dev'+'/api/token/', formData);
+    const { data } = await axiosInstance.post('/api/token/', formData);
     localStorage.setItem('access_token', data.access);
     localStorage.setItem('refresh_token', data.refresh);
 
