@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const BASE_URL = import.meta.env.VITE_API_URL || 'https://backend-rough-wildflower-2218.fly.dev';
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
 });

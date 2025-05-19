@@ -11,7 +11,7 @@ const TrainModel = () => {
     setResponse(null);
 
     try {
-      const response = await axiosInstance.post('http://127.0.0.1:8000/prediction/async-train-model/');
+      const response = await axiosInstance.post('https://backend-rough-wildflower-2218.fly.dev/prediction/async-train-model/');
       setResponse(response.data);
     } catch (err) {
       setError(err.response?.data?.message || 'Training failed');
