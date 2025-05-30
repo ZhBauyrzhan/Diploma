@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = import.meta.env.VITE_API_URL || 'https://backend-rough-wildflower-2218.fly.dev';
+const BASE_URL = import.meta.env.VITE_API_URL || 'https://diploma-back-winter-paper-7427.fly.dev';
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
 });
